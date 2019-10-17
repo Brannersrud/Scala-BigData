@@ -2,7 +2,6 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions.{count, explode}
 import org.apache.spark.{SparkConf, SparkContext}
-
 object ContainsTrafficCalmingHump {
 
   def main(args: Array[String]) {
@@ -35,9 +34,8 @@ object ContainsTrafficCalmingHump {
     val joined = filteredNodeQuery.join(myquery, filteredNodeQuery("_id") === myquery("_ref"))
     //partition to get count by each id
     val partition = Window.partitionBy($"WayId")
-    val p = joined.withColumn("barrier_count", count($"Nodetags._k") over partition).orderBy($"barrier_count".desc)
+    val p = joined.withColumn("total_barrier_count", count($"Nodetags._k") over partition).orderBy($"total_barrier_count".desc)
 
-
-    p.show(100)
+    p.groupBy($"WayId", $"total_barrier_count").count().show(15)
   }
 }
