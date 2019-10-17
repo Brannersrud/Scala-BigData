@@ -2,6 +2,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions.{count, explode}
 import org.apache.spark.{SparkConf, SparkContext}
+
 object ContainsTrafficCalmingHump {
 
   def main(args: Array[String]) {
